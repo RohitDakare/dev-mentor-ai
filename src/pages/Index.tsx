@@ -91,25 +91,28 @@ const Index = () => {
           break;
 
         case "gemini":
-          response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              contents: [{
-                parts: [{
-                  text: `${prompt}\nRespond with exactly 3 project suggestions in JSON format. Each project should have: title, description, techStack (array), and difficulty (string).`
-                }]
-              }],
-              generationConfig: {
-                temperature: 0.7,
-                topK: 40,
-                topP: 0.95,
+          // Updated Gemini API call with key as query parameter
+          response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
               },
-            }),
-          });
+              body: JSON.stringify({
+                contents: [{
+                  parts: [{
+                    text: `${prompt}\nRespond with exactly 3 project suggestions in JSON format. Each project should have: title, description, techStack (array), and difficulty (string).`
+                  }]
+                }],
+                generationConfig: {
+                  temperature: 0.7,
+                  topK: 40,
+                  topP: 0.95,
+                },
+              }),
+            }
+          );
           break;
 
         case "openai":
