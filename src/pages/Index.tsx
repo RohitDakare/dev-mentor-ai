@@ -20,9 +20,9 @@ const Index = () => {
   const [interests, setInterests] = useState("");
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<any[]>([]);
-  const [selectedProvider, setSelectedProvider] = useState("perplexity");
+  const [selectedProvider, setSelectedProvider] = useState("gemini");
   const [perplexityKey, setPerplexityKey] = useState("");
-  const [geminiKey, setGeminiKey] = useState("");
+  const [geminiKey, setGeminiKey] = useState("AIzaSyDmMaMTy-6hFUUyapt8_uSXURnin6mPRH0");
   const [openaiKey, setOpenaiKey] = useState("");
   const { toast } = useToast();
 
@@ -91,7 +91,6 @@ const Index = () => {
           break;
 
         case "gemini":
-          // Updated Gemini API call with key as query parameter
           response = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
             {
@@ -201,8 +200,8 @@ const Index = () => {
                   <SelectValue placeholder="Select AI Provider" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="perplexity">Perplexity AI</SelectItem>
                   <SelectItem value="gemini">Google Gemini</SelectItem>
+                  <SelectItem value="perplexity">Perplexity AI</SelectItem>
                   <SelectItem value="openai">OpenAI GPT-4</SelectItem>
                 </SelectContent>
               </Select>
