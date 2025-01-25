@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import SavedLibrary from "@/components/SavedLibrary";
 
 const Index = () => {
   const [skills, setSkills] = useState("");
@@ -322,6 +323,10 @@ const Index = () => {
             </div>
           </div>
         )}
+
+        <div className="mt-16">
+          <SavedLibrary />
+        </div>
 
         <ProjectDetailsModal
           project={selectedProject}
