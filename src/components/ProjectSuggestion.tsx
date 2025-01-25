@@ -9,9 +9,10 @@ interface ProjectSuggestionProps {
     techStack: string[];
     difficulty: string;
   };
+  onClick: () => void;
 }
 
-const ProjectSuggestion = ({ suggestion }: ProjectSuggestionProps) => {
+const ProjectSuggestion = ({ suggestion, onClick }: ProjectSuggestionProps) => {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
       case "beginner":
@@ -26,7 +27,10 @@ const ProjectSuggestion = ({ suggestion }: ProjectSuggestionProps) => {
   };
 
   return (
-    <Card className="h-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden">
+    <Card 
+      className="h-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden cursor-pointer"
+      onClick={onClick}
+    >
       <CardHeader className="p-6">
         <div className="flex justify-between items-start space-x-4">
           <CardTitle className="text-xl font-bold text-gray-900 dark:text-gray-100">

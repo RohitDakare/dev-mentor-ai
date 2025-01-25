@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import ProjectSuggestion from "@/components/ProjectSuggestion";
+import ProjectDetailsModal from "@/components/ProjectDetailsModal";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2, Wand2 } from "lucide-react";
 import {
@@ -24,6 +25,8 @@ const Index = () => {
   const [perplexityKey, setPerplexityKey] = useState("");
   const [geminiKey, setGeminiKey] = useState("AIzaSyDmMaMTy-6hFUUyapt8_uSXURnin6mPRH0");
   const [openaiKey, setOpenaiKey] = useState("");
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { toast } = useToast();
 
   const getApiKeyForProvider = () => {
@@ -62,7 +65,6 @@ const Index = () => {
     setLoading(true);
     try {
       let response;
-      // Generate a random number between 10 and 20 for project count
       const projectCount = Math.floor(Math.random() * 11) + 10; // Random number between 10-20
       const prompt = `Skills: ${skills}\nExperience Level: ${experience}\nInterests: ${interests}\nPlease suggest ${projectCount} unique and creative projects I could build. Make them diverse, innovative, and different from typical tutorial projects. Include projects of varying complexity and scope.`;
 
@@ -87,7 +89,7 @@ const Index = () => {
                   content: prompt,
                 },
               ],
-              temperature: 0.9, // Increased for more creativity
+              temperature: 0.9,
             }),
           });
           break;
@@ -107,7 +109,7 @@ const Index = () => {
                   }]
                 }],
                 generationConfig: {
-                  temperature: 0.9, // Increased for more creativity
+                  temperature: 0.9,
                   topK: 40,
                   topP: 0.95,
                 },
@@ -136,7 +138,7 @@ const Index = () => {
                   content: prompt,
                 },
               ],
-              temperature: 0.9, // Increased for more creativity
+              temperature: 0.9,
             }),
           });
           break;
@@ -174,6 +176,11 @@ const Index = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleProjectClick = (project: any) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
   };
 
   return (
@@ -306,12 +313,21 @@ const Index = () => {
                   key={index}
                   className="transform hover:-translate-y-1 transition-all duration-200"
                 >
-                  <ProjectSuggestion suggestion={suggestion} />
+                  <ProjectSuggestion 
+                    suggestion={suggestion} 
+                    onClick={() => handleProjectClick(suggestion)}
+                  />
                 </div>
               ))}
             </div>
           </div>
         )}
+
+        <ProjectDetailsModal
+          project={selectedProject}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );
