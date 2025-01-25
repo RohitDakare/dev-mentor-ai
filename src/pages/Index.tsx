@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import ProjectSuggestion from "@/components/ProjectSuggestion";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Wand2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -175,123 +175,137 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-blue-900">
+        <div className="text-center space-y-4 animate-fade-in">
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 font-inter">
             AI Project Suggester
           </h1>
-          <p className="text-lg text-blue-700">
+          <p className="text-lg text-gray-600 dark:text-gray-300 font-inter">
             Get personalized project suggestions based on your skills and interests
           </p>
         </div>
 
-        <Card className="p-6 space-y-6 bg-white/80 backdrop-blur-sm">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                AI Provider
-              </label>
-              <Select
-                value={selectedProvider}
-                onValueChange={setSelectedProvider}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select AI Provider" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="gemini">Google Gemini</SelectItem>
-                  <SelectItem value="perplexity">Perplexity AI</SelectItem>
-                  <SelectItem value="openai">OpenAI GPT-4</SelectItem>
-                </SelectContent>
-              </Select>
+        <Card className="p-8 space-y-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-xl rounded-xl animate-scale-in">
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  AI Provider
+                </label>
+                <Select value={selectedProvider} onValueChange={setSelectedProvider}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select AI Provider" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="gemini">Google Gemini</SelectItem>
+                    <SelectItem value="perplexity">Perplexity AI</SelectItem>
+                    <SelectItem value="openai">OpenAI GPT-4</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  API Key
+                </label>
+                <Input
+                  type="password"
+                  placeholder={`Enter your ${
+                    selectedProvider.charAt(0).toUpperCase() + selectedProvider.slice(1)
+                  } API key`}
+                  value={getApiKeyForProvider()}
+                  onChange={(e) => {
+                    switch (selectedProvider) {
+                      case "perplexity":
+                        setPerplexityKey(e.target.value);
+                        break;
+                      case "gemini":
+                        setGeminiKey(e.target.value);
+                        break;
+                      case "openai":
+                        setOpenaiKey(e.target.value);
+                        break;
+                    }
+                  }}
+                  className="w-full transition-all duration-200 focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                API Key
-              </label>
-              <Input
-                type="password"
-                placeholder={`Enter your ${
-                  selectedProvider.charAt(0).toUpperCase() +
-                  selectedProvider.slice(1)
-                } API key`}
-                value={getApiKeyForProvider()}
-                onChange={(e) => {
-                  switch (selectedProvider) {
-                    case "perplexity":
-                      setPerplexityKey(e.target.value);
-                      break;
-                    case "gemini":
-                      setGeminiKey(e.target.value);
-                      break;
-                    case "openai":
-                      setOpenaiKey(e.target.value);
-                      break;
-                  }
-                }}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Skills
               </label>
               <Input
                 placeholder="e.g., JavaScript, Python, React"
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
-                className="w-full"
+                className="w-full transition-all duration-200 focus:ring-2 focus:ring-purple-500"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Experience Level
               </label>
-              <Input
-                placeholder="e.g., Beginner, Intermediate, Advanced"
-                value={experience}
-                onChange={(e) => setExperience(e.target.value)}
-                className="w-full"
-              />
+              <Select value={experience} onValueChange={setExperience}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select your experience level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="beginner">Beginner</SelectItem>
+                  <SelectItem value="intermediate">Intermediate</SelectItem>
+                  <SelectItem value="advanced">Advanced</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Interests
               </label>
               <Textarea
                 placeholder="What kind of projects interest you?"
                 value={interests}
                 onChange={(e) => setInterests(e.target.value)}
-                className="w-full"
+                className="w-full min-h-[100px] transition-all duration-200 focus:ring-2 focus:ring-purple-500"
               />
             </div>
           </div>
 
           <Button
             onClick={generateSuggestions}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
             disabled={loading}
           >
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 Generating Suggestions...
               </>
             ) : (
-              "Generate Project Suggestions"
+              <>
+                <Wand2 className="mr-2 h-5 w-5" />
+                Generate Project Suggestions
+              </>
             )}
           </Button>
         </Card>
 
         {suggestions.length > 0 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-blue-900 text-center">
+          <div className="space-y-6 animate-fade-in">
+            <h2 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
               Suggested Projects
             </h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {suggestions.map((suggestion, index) => (
-                <ProjectSuggestion key={index} suggestion={suggestion} />
+                <div
+                  key={index}
+                  className="transform hover:-translate-y-1 transition-all duration-200"
+                >
+                  <ProjectSuggestion suggestion={suggestion} />
+                </div>
               ))}
             </div>
           </div>
