@@ -62,7 +62,9 @@ const Index = () => {
     setLoading(true);
     try {
       let response;
-      const prompt = `Skills: ${skills}\nExperience Level: ${experience}\nInterests: ${interests}\nPlease suggest some projects I could build.`;
+      // Generate a random number between 10 and 20 for project count
+      const projectCount = Math.floor(Math.random() * 11) + 10; // Random number between 10-20
+      const prompt = `Skills: ${skills}\nExperience Level: ${experience}\nInterests: ${interests}\nPlease suggest ${projectCount} unique and creative projects I could build. Make them diverse, innovative, and different from typical tutorial projects. Include projects of varying complexity and scope.`;
 
       switch (selectedProvider) {
         case "perplexity":
@@ -78,14 +80,14 @@ const Index = () => {
                 {
                   role: "system",
                   content:
-                    "You are a helpful AI that suggests programming projects based on developer skills and interests. Provide 3 detailed project suggestions in JSON format with title, description, techStack, and difficulty fields.",
+                    `You are a creative AI that suggests unique programming projects based on developer skills and interests. Provide ${projectCount} detailed project suggestions in JSON format with title, description, techStack, and difficulty fields. Ensure each project is unique and innovative.`,
                 },
                 {
                   role: "user",
                   content: prompt,
                 },
               ],
-              temperature: 0.7,
+              temperature: 0.9, // Increased for more creativity
             }),
           });
           break;
@@ -101,11 +103,11 @@ const Index = () => {
               body: JSON.stringify({
                 contents: [{
                   parts: [{
-                    text: `${prompt}\nRespond with exactly 3 project suggestions in JSON format. Each project should have: title, description, techStack (array), and difficulty (string).`
+                    text: `${prompt}\nRespond with exactly ${projectCount} unique project suggestions in JSON format. Each project should have: title, description, techStack (array), and difficulty (string). Make each project different and innovative.`
                   }]
                 }],
                 generationConfig: {
-                  temperature: 0.7,
+                  temperature: 0.9, // Increased for more creativity
                   topK: 40,
                   topP: 0.95,
                 },
@@ -127,14 +129,14 @@ const Index = () => {
                 {
                   role: "system",
                   content:
-                    "You are a helpful AI that suggests programming projects based on developer skills and interests. Provide 3 detailed project suggestions in JSON format with title, description, techStack, and difficulty fields.",
+                    `You are a creative AI that suggests unique programming projects based on developer skills and interests. Provide ${projectCount} detailed project suggestions in JSON format with title, description, techStack, and difficulty fields. Ensure each project is unique and innovative.`,
                 },
                 {
                   role: "user",
                   content: prompt,
                 },
               ],
-              temperature: 0.7,
+              temperature: 0.9, // Increased for more creativity
             }),
           });
           break;
